@@ -1,5 +1,5 @@
 package yes;
-//ТУДУ: разные масштабы картинки
+//ТУДУ: разные масштабы экрана
 public class Config {
     private static final int SIZE = 20;
     private static final int WIDTH = 40;

@@ -12,7 +12,6 @@ public class Window implements Runnable{
 
     void initFrame() {
         Config conf = new Config();
-
         frame = new JFrame();
         frame.getContentPane().setLayout(null);
         frame.setSize(conf.getSize() * conf.getWidth(), conf.getSize() * conf.getHeight());
