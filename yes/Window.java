@@ -15,7 +15,7 @@ public class Window implements Runnable{
     void initFrame() {
         frame = new JFrame();
         frame.getContentPane().setLayout(null);
-        frame.setSize(500, 500);
+        frame.setSize(Config.SIZE * Config.WIDTH, Config.SIZE * Config.HEIGHT);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
