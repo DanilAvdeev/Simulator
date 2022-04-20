@@ -1,4 +1,4 @@
-package yes;
+package main;
 
 import javax.swing.*;
 
@@ -19,7 +19,6 @@ public class Window {
         GamePanel gamePanel = new GamePanel();
         frame.add(gamePanel);
         frame.pack();
-
         frame.setVisible(true);
 
         gamePanel.startGameThread();
