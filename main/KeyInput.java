@@ -1,4 +1,4 @@
-package yes;
+package main;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -13,7 +13,6 @@ public class KeyInput implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-
         int code = e.getKeyCode();
 
         if (code == KeyEvent.VK_SPACE) {
