@@ -4,14 +4,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Random;
 
-//ТУДУ: разные масштабы экрана
 public class GamePanel extends JPanel implements Runnable {
     //FRAME
     static final int scale = 1; //later change it so we can choose it from different
     static final int originTileSize = 16;
     static final int tileSize = scale * originTileSize;
-    static final int maxScreenCol = 20;
-    static final int maxScreenRow = 12; //window is 4x3
+    static final int maxScreenCol = 40;
+    static final int maxScreenRow = 30; //window is 4x3
     static final int screenWidth = tileSize * maxScreenCol;
     static final int screenHeight = tileSize * maxScreenRow;
     //FPS
@@ -24,7 +23,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
-        this.setBackground(Color.WHITE);
+        this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);
         this.addKeyListener(keyInput);
         this.setFocusable(true);
@@ -38,7 +37,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     @Override
     public void run() {
-        double drawInterval = 1000000000.0 / fps; //0.0166 sec
+        double drawInterval = 10000000000.0 / fps; //0.0166 sec
         double delta = 0;
         long lastTime = System.nanoTime();
         long currentTime;
@@ -64,13 +63,11 @@ public class GamePanel extends JPanel implements Runnable {
                 drawCount = 0;
                 timer = 0;
             }
-
         }
     }
 
     public void update() {
         int around;
-
         for (int x = 0; x < maxScreenCol; x++) {
             for (int y = 0; y < maxScreenRow; y++) {
                 around = cellsAround(boxes, x, y);
@@ -78,7 +75,6 @@ public class GamePanel extends JPanel implements Runnable {
             }
         }
     }
-
 
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
@@ -89,7 +85,6 @@ public class GamePanel extends JPanel implements Runnable {
                 boxes[x][y].draw(graphics2D);
             }
         }
-
         graphics2D.dispose();
     }
 
@@ -107,37 +102,19 @@ public class GamePanel extends JPanel implements Runnable {
                 }
             }
         }
-
-//        for(int y = 0; y  < 100; y++){
-//            boxes[0][y].cell.state = State.ALIVE;
-//        }
-//        for(int y = 0; y  < 100; y++){
-//            boxes[1][y].cell.state = State.ALIVE;
-//        }
-
     }
 
     public static int getTileSize() {
         return tileSize;
     }
 
-    public static int getScreenWidth(){
-        return screenWidth;
-    }
-
-    public static int getScreenHeight() {
-        return screenHeight;
-    }
-
     int cellsAround(Box[][] boxes, int x, int y) {
         int count = 0;
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
-                if ((i + x >= 0) && (i + x < maxScreenCol) && (y + j >= 0) && (y + j < maxScreenRow)) {
-                    if (!(i == 0 && j == 0)){
-                        if (boxes[x+i][y+j].cell.isLive()) {
-                            count++;
-                        }
+                if (!(i == 0 && j == 0)){
+                    if (boxes[(x+i + maxScreenCol)%maxScreenCol][(y+j+ maxScreenRow)%maxScreenRow].cell.isLive()) {
+                        count++;
                     }
                 }
             }
