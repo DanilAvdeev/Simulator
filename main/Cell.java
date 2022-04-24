@@ -3,24 +3,24 @@ package main;
 import java.awt.*;
 
 public class Cell {
-    public State state;
+    public CellState cellState;
 
     public Cell() {
-        state = State.DEAD;
+        cellState = CellState.DEAD;
     }
 
     public boolean isLive() {
-        return state == State.ALIVE;
+        return cellState == CellState.ALIVE;
     }
 
     public void step1(int around) {
-        state = state.step_1(around);
+        cellState = cellState.step_1(around);
     }
 
-    public void turn() { this.state = State.ALIVE; }
+    public void turn() { this.cellState = CellState.ALIVE; }
 
     public Color getColor() {
-        if (this.state == State.DEAD) {
+        if (this.cellState == CellState.DEAD) {
             return Color.WHITE;
         }
         return Color.BLUE;

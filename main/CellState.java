@@ -1,10 +1,10 @@
 package main;
 
-public enum State {
+public enum CellState {
     ALIVE,
     DEAD;
 
-    public State step_1 (int around) {
+    public CellState step_1 (int around) {
         if (this == DEAD) {
             if (around == 3) {
                 return ALIVE;

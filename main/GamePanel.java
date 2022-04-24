@@ -96,9 +96,9 @@ public class GamePanel extends JPanel implements Runnable {
                 boxes[x][y] = new Box(x, y);
                 random = new Random();
                 if (random.nextBoolean()) {
-                    boxes[x][y].cell.state = State.ALIVE;
+                    boxes[x][y].cell.cellState = CellState.ALIVE;
                 } else {
-                    boxes[x][y].cell.state = State.DEAD;
+                    boxes[x][y].cell.cellState = CellState.DEAD;
                 }
             }
         }
