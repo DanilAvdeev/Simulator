@@ -2,6 +2,7 @@ package main;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.util.Random;
 
 public class GamePanel extends JPanel implements Runnable {
@@ -16,9 +17,12 @@ public class GamePanel extends JPanel implements Runnable {
     //FPS
     int fps = 60;
 
+    public static WindowState windowState = WindowState.MENU;
+    //"map" for LifeGame
     Box[][] boxes;
+    Player player;
 
-    KeyInput keyInput = new KeyInput();
+    KeyInput keyInput = new KeyInput();  //not in use rn
     Thread gameThread;
 
     public GamePanel() {
@@ -66,6 +70,14 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
+    public void actionPerformed(ActionEvent event){
+        if(windowState.equals(WindowState.MENU)){ //если мы на вкладке меню
+
+        } else {                                  //если мы на вкладке игры
+
+        }
+    }
+
     public void update() {
         int around;
         for (int x = 0; x < maxScreenCol; x++) {
@@ -104,10 +116,6 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
-    public static int getTileSize() {
-        return tileSize;
-    }
-
     int cellsAround(Box[][] boxes, int x, int y) {
         int count = 0;
         for (int i = -1; i <= 1; i++) {
@@ -121,4 +129,10 @@ public class GamePanel extends JPanel implements Runnable {
         }
         return count;
     }
+
+    public static int getTileSize() {
+        return tileSize;
+    }
+    public static int getScreenWidth() { return screenWidth; }
+    public static int getScreenHeight() { return screenHeight; }
 }

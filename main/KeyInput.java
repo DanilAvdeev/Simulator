@@ -15,19 +15,19 @@ public class KeyInput implements KeyListener {
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
 
-        if (code == KeyEvent.VK_SPACE) {
-            spacePressed = true;
-            System.out.println("I've pressed SPACE button");
-        }
+//        if (code == KeyEvent.VK_SPACE) {
+//            spacePressed = true;
+//            System.out.println("I've pressed SPACE button");
+//        }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
         int code = e.getKeyCode();
 
-        if (code == KeyEvent.VK_SPACE) {
-            spacePressed = false;
-            System.out.println("I've pressed SPACE button");
-        }
+//        if (code == KeyEvent.VK_SPACE) {
+//            spacePressed = false;
+//            System.out.println("I've pressed SPACE button");
+//        }
     }
 }
