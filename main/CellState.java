@@ -10,7 +10,7 @@ public enum CellState {
                 return ALIVE;
             } else {
                 return DEAD;
-            }//
+            }
         } else if (this == ALIVE) {
             if (around < 2 || around > 3) {
                 return DEAD;
