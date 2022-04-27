@@ -21,7 +21,9 @@ public class GamePanel extends JPanel implements Runnable {
     //"map" for LifeGame
     Box[][] boxes;
     Player player;
-
+    Menu menu = new Menu();
+    JLabel label;
+    MouseInput mouseInput = new MouseInput();
     KeyInput keyInput = new KeyInput();  //not in use rn
     Thread gameThread;
 
@@ -30,7 +32,9 @@ public class GamePanel extends JPanel implements Runnable {
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);
         this.addKeyListener(keyInput);
+        this.addMouseListener(mouseInput);
         this.setFocusable(true);
+        this.addMouseMotionListener(mouseInput);
         initBoxes();
     }
 
@@ -70,20 +74,29 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
-    public void actionPerformed(ActionEvent event){
-        if(windowState.equals(WindowState.MENU)){ //если мы на вкладке меню
+    public void actionPerformed(ActionEvent event) {
+        if (windowState.equals(WindowState.MENU)) { //если мы на вкладке меню
 
-        } else {                                  //если мы на вкладке игры
+        } else if (windowState.equals(WindowState.GAME_1)) {                                  //если мы на вкладке игры
+
+        } else {
 
         }
     }
 
     public void update() {
-        int around;
-        for (int x = 0; x < maxScreenCol; x++) {
-            for (int y = 0; y < maxScreenRow; y++) {
-                around = cellsAround(boxes, x, y);
-                boxes[x][y].step_1(around);
+        if (windowState.equals(WindowState.MENU)) { //если мы на вкладке меню
+            if(mouseInput.mouseX > menu.getX() && mouseInput.mouseX < menu.getX() + menu.getW() &&
+            mouseInput.mouseY > menu.getY() && mouseInput.mouseY < menu.getY()+ menu.getH() && mouseInput.clicked){
+                windowState = WindowState.GAME_1;
+            }
+        } else if (windowState.equals(WindowState.GAME_1)) {
+            int around;
+            for (int x = 0; x < maxScreenCol; x++) {
+                for (int y = 0; y < maxScreenRow; y++) {
+                    around = cellsAround(boxes, x, y);
+                    boxes[x][y].step_1(around);
+                }
             }
         }
     }
@@ -91,20 +104,28 @@ public class GamePanel extends JPanel implements Runnable {
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
         Graphics2D graphics2D = (Graphics2D) graphics;
-
-        for (int x = 0; x < maxScreenCol; x++) {
-            for (int y = 0; y < maxScreenRow; y++) {
-                boxes[x][y].draw(graphics2D);
+        if (windowState == WindowState.MENU) {
+            super.paintComponent(graphics);
+            menu.draw(graphics2D, this);
+            graphics2D.dispose();
+        } else if (windowState == WindowState.GAME_1) {
+            for (int x = 0; x < maxScreenCol; x++) {
+                for (int y = 0; y < maxScreenRow; y++) {
+                    boxes[x][y].draw(graphics2D);
+                }
             }
+            graphics2D.dispose();
+        } else {
+
+            graphics2D.dispose();
         }
-        graphics2D.dispose();
     }
 
-    private void initBoxes () {
+    private void initBoxes() {
         Random random;
         boxes = new Box[maxScreenCol][maxScreenRow];
-        for (int x = 0; x < maxScreenCol; x++){
-            for (int y = 0; y < maxScreenRow; y++){
+        for (int x = 0; x < maxScreenCol; x++) {
+            for (int y = 0; y < maxScreenRow; y++) {
                 boxes[x][y] = new Box(x, y);
                 random = new Random();
                 if (random.nextBoolean()) {
@@ -120,8 +141,8 @@ public class GamePanel extends JPanel implements Runnable {
         int count = 0;
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
-                if (!(i == 0 && j == 0)){
-                    if (boxes[(x+i + maxScreenCol)%maxScreenCol][(y+j+ maxScreenRow)%maxScreenRow].cell.isLive()) {
+                if (!(i == 0 && j == 0)) {
+                    if (boxes[(x + i + maxScreenCol) % maxScreenCol][(y + j + maxScreenRow) % maxScreenRow].cell.isLive()) {
                         count++;
                     }
                 }
@@ -133,6 +154,12 @@ public class GamePanel extends JPanel implements Runnable {
     public static int getTileSize() {
         return tileSize;
     }
-    public static int getScreenWidth() { return screenWidth; }
-    public static int getScreenHeight() { return screenHeight; }
+
+    public static int getScreenWidth() {
+        return screenWidth;
+    }
+
+    public static int getScreenHeight() {
+        return screenHeight;
+    }
 }

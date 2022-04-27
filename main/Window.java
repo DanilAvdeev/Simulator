@@ -13,7 +13,7 @@ public class Window {
         frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
-        frame.setTitle("Life Game");
+        frame.setTitle("Simulator");
         frame.setResizable(false);
 
         GamePanel gamePanel = new GamePanel();

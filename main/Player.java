@@ -8,7 +8,7 @@ public class Player {
     private int x;
     private int y; //по идее не будет меняться
     private int height;
-    private int weight;
+    private int width;
     //скорость перемещения
     private int speed;
 
@@ -24,7 +24,7 @@ public class Player {
         y = 0;
 
         height = GamePanel.getTileSize();
-        weight = GamePanel.getTileSize();
+        width = GamePanel.getTileSize();
 
         speed = 2;
 
@@ -32,11 +32,11 @@ public class Player {
         right = false;
     }
 
-    void update(){
+    void update() {
         if (left && x >= speed) {
             x -= speed;
         }
-        if (right && x <= GamePanel.screenWidth - speed - weight) {
+        if (right && x <= GamePanel.screenWidth - speed - width) {
             x += speed;
         }
     }

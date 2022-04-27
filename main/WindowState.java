@@ -2,5 +2,6 @@ package main;
 
 public enum WindowState {
     MENU,
-    GAME;
+    GAME_1,
+    GAME_2;
 }

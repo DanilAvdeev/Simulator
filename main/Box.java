@@ -26,9 +26,9 @@ public class Box extends JPanel {
         cell.step1(around);
     }
 
-    void draw(Graphics2D g2){
+    void draw(Graphics2D g2) {
         g2.setColor(cell.getColor());
-        g2.fillRect(x_cord*GamePanel.getTileSize()+1, y_cord*GamePanel.getTileSize()+1,
-                    GamePanel.getTileSize()-2, GamePanel.getTileSize()-2);
+        g2.fillRect(x_cord * GamePanel.getTileSize() + 1, y_cord * GamePanel.getTileSize() + 1,
+                GamePanel.getTileSize() - 2, GamePanel.getTileSize() - 2);
     }
 }
