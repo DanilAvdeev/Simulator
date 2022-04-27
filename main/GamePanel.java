@@ -45,7 +45,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     @Override
     public void run() {
-        double drawInterval = 10000000000.0 / fps; //0.0166 sec
+        double drawInterval; //0.0166 sec
         double delta = 0;
         long lastTime = System.nanoTime();
         long currentTime;
@@ -53,6 +53,13 @@ public class GamePanel extends JPanel implements Runnable {
         int drawCount = 0;
 
         while (gameThread != null) {
+            if(windowState == WindowState.MENU){
+                drawInterval = 1000000000.0 / fps;
+            } else if(windowState == WindowState.GAME_1){
+                drawInterval = 10000000000.0 / fps;
+            } else {
+                drawInterval = 100000000000.0 / fps;
+            }
             //1.UPDATE INFORMATION
             currentTime = System.nanoTime();
             delta += (currentTime - lastTime) / drawInterval;
@@ -86,10 +93,12 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void update() {
         if (windowState.equals(WindowState.MENU)) { //если мы на вкладке меню
-            if(mouseInput.mouseX > menu.getX() && mouseInput.mouseX < menu.getX() + menu.getW() &&
-            mouseInput.mouseY > menu.getY() && mouseInput.mouseY < menu.getY()+ menu.getH() && mouseInput.clicked){
+            if (mouseInput.mouseX > menu.getX() && mouseInput.mouseX < menu.getX() + menu.getW() &&
+                    mouseInput.mouseY > menu.getY() && mouseInput.mouseY < menu.getY() + menu.getH() && mouseInput.clicked) {
                 windowState = WindowState.GAME_1;
+                mouseInput.clicked = false;
             }
+
         } else if (windowState.equals(WindowState.GAME_1)) {
             int around;
             for (int x = 0; x < maxScreenCol; x++) {
@@ -98,6 +107,12 @@ public class GamePanel extends JPanel implements Runnable {
                     boxes[x][y].step_1(around);
                 }
             }
+            if (keyInput.escPressed) {
+                windowState = WindowState.MENU;
+                keyInput.escPressed = false;
+            }
+        } else {
+            System.out.print("how did you get here??");
         }
     }
 
