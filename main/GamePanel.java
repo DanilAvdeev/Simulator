@@ -1,5 +1,8 @@
 package main;
 
+import main.lifeGame.CellState;
+import main.spaceInvaders.Player;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -22,7 +25,6 @@ public class GamePanel extends JPanel implements Runnable {
     Box[][] boxes;
     Player player;
     Menu menu = new Menu();
-    JLabel label;
     MouseInput mouseInput = new MouseInput();
     KeyInput keyInput = new KeyInput();  //not in use rn
     Thread gameThread;

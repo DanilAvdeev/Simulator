@@ -1,5 +1,7 @@
 package main;
 
+import main.lifeGame.Cell;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.*;

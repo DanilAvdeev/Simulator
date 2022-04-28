@@ -1,4 +1,4 @@
-package main;
+package main.lifeGame;
 
 import java.awt.*;
 

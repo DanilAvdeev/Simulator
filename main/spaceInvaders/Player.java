@@ -1,4 +1,6 @@
-package main;
+package main.spaceInvaders;
+
+import main.GamePanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -6,11 +8,11 @@ import java.awt.*;
 public class Player {
     //начальные координаты и размеры игрока (корабля)
     private int x;
-    private int y; //по идее не будет меняться
+    private final int y = 400; //по идее не будет меняться
     private int height;
     private int width;
     //скорость перемещения
-    private int speed;
+    private final int speed = 2;
 
     //перемещение влево, вправо
     public static boolean left;
@@ -20,13 +22,10 @@ public class Player {
 
     //конструктор сделать синглтоновым
     public Player() {
-        x = 0;
-        y = 0;
+        x = GamePanel.getScreenWidth() / 2;
 
         height = GamePanel.getTileSize();
         width = GamePanel.getTileSize();
-
-        speed = 2;
 
         left = false;
         right = false;
@@ -36,7 +35,7 @@ public class Player {
         if (left && x >= speed) {
             x -= speed;
         }
-        if (right && x <= GamePanel.screenWidth - speed - width) {
+        if (right && x <= GamePanel.getScreenWidth() - speed - width) {
             x += speed;
         }
     }
