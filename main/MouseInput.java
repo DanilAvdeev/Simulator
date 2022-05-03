@@ -37,7 +37,4 @@ public class MouseInput implements MouseListener, MouseMotionListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {}
-
-//    public int getMouseX() { return mouseX; }
-//    public int getMouseY() { return mouseY; }
 }

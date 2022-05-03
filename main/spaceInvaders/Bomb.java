@@ -5,26 +5,26 @@ import main.GamePanel;
 import java.awt.*;
 
 public class Bomb {
-    int startX;
-    int startY;
+    int x;
+    int y;
     final int speed = 2;
     boolean alive = false;
 
-    public Bomb(int x, int y) {
+    public Bomb(int x_cord, int y_cord) {
         alive = true;
-        startX = x;
-        startY = y;
+        x = x_cord;
+        y = y_cord;
     }
 
     public void update() {
-        startY += speed;
-        if (startY >= GamePanel.getScreenHeight()) {
+        y += speed;
+        if (y >= GamePanel.getScreenHeight()) {
             alive = false;
         }
     }
 
     public void draw(Graphics2D g2) {
         g2.setColor(Color.RED);
-        g2.fillRect(startX, startY, 1, 1);
+        g2.fillRect(x, y, 2, 3);
     }
 }

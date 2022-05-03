@@ -2,36 +2,33 @@ package main.spaceInvaders;
 
 import main.GamePanel;
 
-import javax.swing.*;
 import java.awt.*;
 
 public class Player {
     //начальные координаты и размеры игрока (корабля)
     private int x;
     private final int y = 400; //по идее не будет меняться
-    private int height;
-    private int width;
+    final int height;
+    final int width;
     //скорость перемещения
-    private final int speed = 2;
-
-    //перемещение влево, вправо
-    public static boolean left;
-    public static boolean right;
-
-    //Image img = new ImageIcon("").getImage(); //текстурка корабля
+    final int speed = 2;
 
     //конструктор сделать синглтоновым
     public Player() {
         x = GamePanel.getScreenWidth() / 2;
-
         height = GamePanel.getTileSize();
         width = GamePanel.getTileSize();
-
-        left = false;
-        right = false;
     }
 
-    void update() {
+    public int getX() {
+        return x;
+    }
+    public int getY() {
+        return y;
+    }
+
+    //поправить координаты слева и справа
+    public void update(boolean left, boolean right) {
         if (left && x >= speed) {
             x -= speed;
         }
@@ -40,8 +37,15 @@ public class Player {
         }
     }
 
-    public void draw(Graphics2D g) {
-        //потом сам нарисую корабль 20х20
-        //g.drawImage(img, x, y, null);
+    public void draw(Graphics2D g2) {
+        g2.setColor(Color.GRAY);
+        g2.fillRect(x + 5, y + 5, 14, 9);
+        g2.fillRect(x + 9, y, 6, 6);
+        g2.fillRect(x + 2, y + 14, 20, 3);//g.drawImage(img, x, y, null);
+        g2.fillRect(x, y + 17, 24, 3);
+        g2.fillRect(x + 5, y + 20, 3, 3);
+        g2.fillRect(x + 16, y + 20, 3, 3);
+        g2.setColor(Color.BLACK);
+        g2.fillRect(x + 9, y + 8, 6, 2);
     }
 }
