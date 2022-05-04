@@ -12,17 +12,13 @@ public class Alien {
     final int speed = 1;
     private boolean direction = false;
     private boolean alive;
+    Bomb bomb;
 
-    public Alien(int x_cord, int y_cord) {
+    public Alien(int x_cord, int y_cord, Bomb bomb1) {
         alive = true;
         x = x_cord;
         y = y_cord;
-        shoot();
-    }
-
-    public Bomb shoot() {
-        Bomb bomb = new Bomb(x, y);
-        return bomb;
+        bomb = bomb1;
     }
 
     public void update() {
@@ -79,5 +75,9 @@ public class Alien {
 
     public int getH() {
         return h;
+    }
+
+    public Bomb getBomb() {
+        return bomb;
     }
 }

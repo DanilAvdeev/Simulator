@@ -1,11 +1,10 @@
 package main;
 
 import main.lifeGame.CellState;
-import main.spaceInvaders.*;
+import main.spaceInvaders.GameController;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.Random;
 
 public class GamePanel extends JPanel implements Runnable {
@@ -21,18 +20,14 @@ public class GamePanel extends JPanel implements Runnable {
     int fps = 60;
 
     public static WindowState windowState = WindowState.MENU;
-    //"map" for LifeGame
+
     Box[][] boxes;
     Menu menu = new Menu();
     MouseInput mouseInput = new MouseInput();
     KeyInput keyInput = new KeyInput();  //not in use rn
     Thread gameThread;
 
-    //Bomb bomb = new Bomb(400, 400);
-    Player player = new Player();
-    Alien alien = new Alien(250, 50);
-    Shot shot = new Shot();
-    Field field = new Field();
+    GameController gameController = new GameController();
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -43,7 +38,6 @@ public class GamePanel extends JPanel implements Runnable {
         this.setFocusable(true);
         this.addMouseMotionListener(mouseInput);
         initBoxes();
-        initAliens();
     }
 
     public void startGameThread() {
@@ -115,26 +109,7 @@ public class GamePanel extends JPanel implements Runnable {
                 }
             }
         } else if (windowState.equals(WindowState.GAME_2)) {
-            player.update(keyInput.left, keyInput.right);
-            if (keyInput.shooting && !shot.isAlive()) {
-                shot.initShot(player.getX(), player.getY());
-            }
-            if (shot.isAlive()) {
-                shot.update();
-            }
-            for(Alien i: aliens) {
-                if (i.isAlive()) {
-                    i.update();
-                    if (doDestroy(i, shot)) {
-                        i.setDead();
-                        shot.setDead();
-                    }
-                }
-            }
-            if (keyInput.escPressed) {
-                windowState = WindowState.MENU;
-                keyInput.escPressed = false;
-            }
+            windowState = gameController.update(keyInput);
         }
     }
 
@@ -153,16 +128,7 @@ public class GamePanel extends JPanel implements Runnable {
             }
             graphics2D.dispose();
         } else if (windowState.equals(WindowState.GAME_2)) {
-            field.draw(graphics2D);
-            player.draw(graphics2D);
-            if (shot.isAlive()) {
-                shot.draw(graphics2D);
-            }
-            for(Alien i: aliens){
-                i.draw(graphics2D);
-            }
-            //alien.draw(graphics2D);
-            graphics2D.dispose();
+            gameController.draw(graphics2D);
         }
     }
 
@@ -179,41 +145,6 @@ public class GamePanel extends JPanel implements Runnable {
                     boxes[x][y].cell.cellState = CellState.DEAD;
                 }
             }
-        }
-    }
-
-    ArrayList<Alien> aliens = new ArrayList<>();
-
-    private void initAliens() {
-//        int num = 7;
-//        final int maxInRow = 4;
-//        int x_offset = 0;
-//        int x_start = x_offset/2;
-//        int y_start = GamePanel.getScreenHeight()/7;
-//        for (int i = 0; i < num; i++) {
-//            Alien alien = new Alien(x_start + x_offset, y_start);
-//            x_offset += GamePanel.getScreenWidth()/maxInRow;
-//            if (i == maxInRow-1) {
-//                y_start += 28;
-//                x_offset = 0;
-//                x_start = GamePanel.getScreenWidth()/(num-maxInRow)/2;
-//            }
-//            aliens.add(alien);
-//        }
-
-        int num = 12;
-        int x_start = 80;
-        int x_offset = 0;
-        int y_start = GamePanel.getScreenHeight()/10;
-
-        for(int i = 0; i < num; i ++) {
-            Alien alien = new Alien(x_start + x_offset, y_start);
-            x_offset += 160;
-            if (i == 3 || i == 7) {
-                x_offset = 0;
-                y_start += 28;
-            }
-            aliens.add(alien);
         }
     }
 
@@ -241,36 +172,6 @@ public class GamePanel extends JPanel implements Runnable {
 
     public static int getScreenHeight() {
         return screenHeight;
-    }
-
-    private boolean doDestroy(Alien alien, Shot shot) {
-        int x_a = alien.getX();
-        int y_a = alien.getY();
-        int w_a = alien.getW();
-        int h_a = alien.getH();
-
-        int x_s = shot.getX();
-        int y_s = shot.getY();
-        int w_s = shot.getW();
-        int h_s = shot.getH();
-
-        if(!shot.isAlive()){
-            return false;
-        }
-        if (x_a + h_a < x_s) {
-            return false;
-        } else if (x_a > x_s + h_s) {
-            return false;
-        } else if (y_a > y_s + w_a) {
-            return false;
-        } else if (y_a + w_a < y_s) {
-            return false;
-        } else if (x_s >= x_a && x_s <= x_a + h_a) {
-            if(y_a <= y_s + w_s && y_a + w_a >= y_s){
-                return true;
-            }
-        }
-        return false;
     }
 
 }
