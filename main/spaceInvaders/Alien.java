@@ -23,22 +23,22 @@ public class Alien {
 
     public void update() {
         if (alive) {
-            boolean getLower = false;
-            if (x <= 0) {
-                direction = true;
-                getLower = true;
-            } else if (x + 23 >= GamePanel.getScreenWidth()) {
-                direction = false;
-                getLower = true;
-            }
+//            boolean getLower = false;
+//            if (x <= 0) {
+//                direction = true;
+//                getLower = true;
+//            } else if (x + 23 >= GamePanel.getScreenWidth()) {
+//                direction = false;
+//                getLower = true;
+//            }
             if (direction) {
                 x += speed;
             } else {
                 x -= speed;
             }
-            if (getLower) {
-                y += 28;
-            }
+//            if (getLower) {
+//                y += 28;
+//            }
         }
     }
 
@@ -55,10 +55,6 @@ public class Alien {
 
     public boolean isAlive() {
         return alive;
-    }
-
-    public void setDead() {
-        alive = false;
     }
 
     public int getX() {
@@ -79,5 +75,17 @@ public class Alien {
 
     public Bomb getBomb() {
         return bomb;
+    }
+
+    public void setDead() {
+        alive = false;
+    }
+
+    public void setDirection(boolean dir) {
+        direction = dir;
+    }
+
+    public void setY(int diff){
+        y += diff;
     }
 }

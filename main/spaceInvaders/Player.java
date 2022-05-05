@@ -22,13 +22,6 @@ public class Player {
         width = GamePanel.getTileSize();
     }
 
-    public int getX() {
-        return x;
-    }
-    public int getY() {
-        return y;
-    }
-
     //поправить координаты слева и справа
     public void update(boolean left, boolean right) {
         if (left && x >= speed) {
@@ -49,5 +42,21 @@ public class Player {
         g2.fillRect(x + 16, y + 20, 3, 3);
         g2.setColor(Color.BLACK);
         g2.fillRect(x + 9, y + 8, 6, 2);
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public int getW() {
+        return width;
+    }
+
+    public int getH() {
+        return height;
     }
 }

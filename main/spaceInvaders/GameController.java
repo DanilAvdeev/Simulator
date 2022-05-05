@@ -13,13 +13,13 @@ public class GameController {
     Shot shot = new Shot();
     Field field = new Field();
 
-    public GameController(){
+    public GameController() {
         initAliens();
     }
 
-    private void shooting(){
-        for(Alien i: aliens){
-            if(i.isAlive() && !i.getBomb().isAlive()) {
+    private void shooting() {
+        for (Alien i : aliens) {
+            if (i.isAlive() && !i.getBomb().isAlive()) {
                 i.getBomb().shooter(i.getX(), i.getY());
             }
         }
@@ -29,9 +29,9 @@ public class GameController {
         int num = 12;
         int x_start = 80;
         int x_offset = 0;
-        int y_start = GamePanel.getScreenHeight()/10;
+        int y_start = GamePanel.getScreenHeight() / 10;
 
-        for(int i = 0; i < num; i ++) {
+        for (int i = 0; i < num; i++) {
             Bomb bomb = new Bomb();
             Alien alien = new Alien(x_start + x_offset, y_start, bomb);
             x_offset += 160;
@@ -43,7 +43,7 @@ public class GameController {
         }
     }
 
-    public  WindowState update(KeyInput keyInput){
+    public WindowState update(KeyInput keyInput) {
         player.update(keyInput.left, keyInput.right);
         if (keyInput.shooting && !shot.isAlive()) {
             shot.initShot(player.getX(), player.getY());
@@ -52,41 +52,47 @@ public class GameController {
             shot.update();
         }
         shooting();
-        for(Alien i: aliens) {
-            if(i.getBomb().isAlive()){
+        switchDirection();
+        for (Alien i : aliens) {
+            if (i.getBomb().isAlive()) {
                 i.getBomb().update();
             }
             if (i.isAlive()) {
                 i.update();
-                if (collision(i, shot)) {
+                if (shot.isAlive() && alienCollision(i, shot)) {
                     i.setDead();
                     shot.setDead();
                 }
             }
+            if (playerCollision(i.getBomb())) {
+                //make Game Over here
+                return WindowState.MENU;
+            }
+
         }
         if (keyInput.escPressed) {
             keyInput.escPressed = false;
             return WindowState.MENU;
         }
-        return  WindowState.GAME_2;
+        return WindowState.GAME_2;
     }
 
-    public void draw(Graphics2D g2){
+    public void draw(Graphics2D g2) {
         field.draw(g2);
         player.draw(g2);
         if (shot.isAlive()) {
             shot.draw(g2);
         }
         for (Alien i : aliens) {
-                i.draw(g2);
-                if (i.getBomb().isAlive()) {
-                    i.getBomb().draw(g2);
-                }
+            i.draw(g2);
+            if (i.getBomb().isAlive()) {
+                i.getBomb().draw(g2);
+            }
         }
         g2.dispose();
     }
 
-    private boolean collision(Alien alien, Shot shot) {
+    private boolean alienCollision(Alien alien, Shot shot) {
         int x_a = alien.getX();
         int y_a = alien.getY();
         int w_a = alien.getW();
@@ -97,7 +103,7 @@ public class GameController {
         int w_s = shot.getW();
         int h_s = shot.getH();
 
-        if(!shot.isAlive()){
+        if (!shot.isAlive()) {
             return false;
         }
         if (x_a + h_a < x_s) {
@@ -114,30 +120,74 @@ public class GameController {
         return false;
     }
 
-    public int minX(ArrayList<Alien> aliens){
-        int minX = GamePanel.getScreenWidth();
+    private boolean playerCollision(Bomb bomb) {
+        int x_b = bomb.getX();
+        int y_b = bomb.getY();
+        int w_b = bomb.getW();
+        int h_b = bomb.getH();
+
+        int x_p = player.getX();
+        int y_p = player.getY();
+        int w_p = player.getW();
+        int h_p = player.getH();
+
+        if (x_b + w_b < x_p) {
+            return false;
+        } else if (x_b > x_p + w_p) {
+            return false;
+        } else if (y_b + h_b < y_p) {
+            return false;
+        } else if (y_b > y_p + h_p) {
+            return false;
+        } else if (x_b + w_b >= x_p && x_b <= x_p + w_p) {
+            return y_b + h_b >= y_p && y_b <= y_p + h_p;
+        }
+        //если пришельцы долетели до игрока
+        if(maxY() >= y_p){
+            return true;
+        }
+        return false;
+    }
+
+    private void switchDirection(){
+        if (minX() == 0) {
             for(Alien i: aliens){
-                if(i.getX() < minX) {
-                    minX = i.getX();
-                }
+                i.setDirection(true);
+                i.setY(28);
             }
+        }
+        if (maxX() == GamePanel.getScreenWidth()) {
+            for(Alien i: aliens){
+                i.setDirection(false);
+                i.setY(28);
+            }
+        }
+    }
+
+    public int minX() {
+        int minX = GamePanel.getScreenWidth();
+        for (Alien i : aliens) {
+            if (i.getX() < minX) {
+                minX = i.getX();
+            }
+        }
         return minX;
     }
 
-    public int maxX(ArrayList<Alien> aliens){
+    public int maxX() {
         int maxX = 0;
-        for(Alien i: aliens){
-            if(i.getX() > maxX) {
-                maxX = i.getX();
+        for (Alien i : aliens) {
+            if (i.getX() + i.getW() > maxX) {
+                maxX = i.getX() + i.getW();
             }
         }
         return maxX;
     }
 
-    public int minY(ArrayList<Alien> aliens){
+    public int maxY() {
         int maxY = 0;
-        for(Alien i: aliens){
-            if(i.getY()+i.getH() < maxY) {
+        for (Alien i : aliens) {
+            if (i.getY() + i.getH() > maxY) {
                 maxY = i.getY() + i.getH();
             }
         }

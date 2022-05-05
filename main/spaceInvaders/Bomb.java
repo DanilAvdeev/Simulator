@@ -5,10 +5,10 @@ import main.GamePanel;
 import java.awt.*;
 
 public class Bomb {
-    int x;
-    int y;
-    int w = 2;
-    int h = 3;
+    private int x;
+    private int y;
+    private int w = 2;
+    private int h = 3;
     final int speed = 2;
     boolean alive = false;
 
