@@ -28,6 +28,7 @@ public class GamePanel extends JPanel implements Runnable {
     Thread gameThread;
 
     GameController gameController = new GameController();
+    static boolean gameStart = true;
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -110,10 +111,13 @@ public class GamePanel extends JPanel implements Runnable {
             }
         } else if (windowState.equals(WindowState.GAME_2)) {
             if(gameController.getGameOver()){
-                gameController = new GameController();
-            } else {
-                windowState = gameController.update(keyInput);
+               gameStart = false;
             }
+            if (gameStart) {
+                gameController = new GameController();
+                gameStart = false;
+            }
+            windowState = gameController.update(keyInput);
         }
     }
 
@@ -176,6 +180,10 @@ public class GamePanel extends JPanel implements Runnable {
 
     public static int getScreenHeight() {
         return screenHeight;
+    }
+
+    public static void setGameStatus(boolean setToStart) {
+        gameStart = setToStart;
     }
 
 }

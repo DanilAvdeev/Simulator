@@ -13,6 +13,8 @@ public class GameController {
     Shot shot = new Shot();
     Field field = new Field();
     boolean isGameOver = false;
+    boolean isWin = false;
+    int score = 0;
 
     public GameController() {
         initAliens();
@@ -57,30 +59,43 @@ public class GameController {
             switchDirection();
             //aliens came to player
             if (maxY() >= player.getY()) {
-                //Make Game Over here
                 isGameOver = true;
             }
+
+            boolean allDead = true;
             for (Alien i : aliens) {
                 if (i.getBomb().isAlive()) {
                     i.getBomb().update();
                 }
                 if (i.isAlive()) {
+                    allDead = false;
                     i.update();
                     if (shot.isAlive() && alienCollision(i, shot)) {
                         i.setDead();
                         shot.setDead();
+                        addScore();
                     }
                 }
                 if (playerCollision(i.getBomb())) {
-                    //make Game Over here
                     isGameOver = true;
                 }
-
             }
-        }
-        if (keyInput.escPressed) {
-            keyInput.escPressed = false;
-            return WindowState.MENU;
+            if (allDead) {
+                isWin = true;
+                isGameOver = true;
+                //add winning line
+            }
+            if (keyInput.escPressed) {
+                keyInput.escPressed = false;
+                return WindowState.MENU;
+            }
+        } else {
+            if (keyInput.escPressed) {
+                keyInput.escPressed = false;
+                GamePanel.setGameStatus(true);
+                isGameOver = false;
+                return WindowState.MENU;
+            }
         }
         return WindowState.GAME_2;
     }
@@ -202,30 +217,54 @@ public class GameController {
     }
 
     private void drawGameOver(Graphics2D g2) {
+        String str;
+        Font font;
+        int length;
+
         g2.setComposite(AlphaComposite.SrcOver.derive(0.15f));
         g2.fillRect(0, 0, GamePanel.getScreenWidth(), GamePanel.getScreenHeight());
 
-        g2.setComposite(AlphaComposite.SrcOver.derive(0.3f));
-        g2.setColor(Color.RED);
-        String str = "Game Over";
-        Font font = new Font("Arial", Font.PLAIN, 60);
-        g2.setFont(font);
-        int length = (int) g2.getFontMetrics().getStringBounds(str, g2).getWidth();
-        g2.drawString(str, GamePanel.getScreenWidth() / 2 - length / 2,
-                GamePanel.getScreenHeight() / 3);
-
+        if (!isWin) {
+            g2.setComposite(AlphaComposite.SrcOver.derive(0.3f));
+            g2.setColor(Color.RED);
+            str = "Game Over";
+            font = new Font("Arial", Font.PLAIN, 60);
+            g2.setFont(font);
+            length = (int) g2.getFontMetrics().getStringBounds(str, g2).getWidth();
+            g2.drawString(str, GamePanel.getScreenWidth() / 2 - length / 2,
+                    GamePanel.getScreenHeight() / 3);
+        } else {
+            g2.setComposite(AlphaComposite.SrcOver.derive(0.3f));
+            g2.setColor(Color.GREEN);
+            str = "You Won!";
+            font = new Font("Arial", Font.PLAIN, 60);
+            g2.setFont(font);
+            length = (int) g2.getFontMetrics().getStringBounds(str, g2).getWidth();
+            g2.drawString(str, GamePanel.getScreenWidth() / 2 - length / 2,
+                    GamePanel.getScreenHeight() / 3);
+        }
         g2.setColor(Color.GRAY);
         str = "Press esc to leave";
-        font = new Font("Arial", Font.PLAIN, 30);
+        font = new Font("Arial", Font.PLAIN, 20);
         g2.setFont(font);
         length = (int) g2.getFontMetrics().getStringBounds(str, g2).getWidth();
         g2. drawString(str, GamePanel.getScreenWidth()/2 - length/2,
-                GamePanel.getScreenHeight()/2);
+                GamePanel.getScreenHeight()/5*4);
 
+        font = new Font("Arial", Font.PLAIN, 30);
+        g2.setFont(font);
+        str = "Your score is: " + score;
+        length = (int) g2.getFontMetrics().getStringBounds(str, g2).getWidth();
+        g2. drawString(str, GamePanel.getScreenWidth()/2 - length/2,
+                GamePanel.getScreenHeight()/2);
         //сделать вывод счета
     }
 
     public boolean getGameOver(){
         return isGameOver;
+    }
+
+    private void addScore(){
+        score += 100;
     }
 }
