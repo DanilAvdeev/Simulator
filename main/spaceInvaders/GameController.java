@@ -12,6 +12,7 @@ public class GameController {
     Player player = new Player();
     Shot shot = new Shot();
     Field field = new Field();
+    boolean isGameOver = false;
 
     public GameController() {
         initAliens();
@@ -44,31 +45,38 @@ public class GameController {
     }
 
     public WindowState update(KeyInput keyInput) {
-        player.update(keyInput.left, keyInput.right);
-        if (keyInput.shooting && !shot.isAlive()) {
-            shot.initShot(player.getX(), player.getY());
-        }
-        if (shot.isAlive()) {
-            shot.update();
-        }
-        shooting();
-        switchDirection();
-        for (Alien i : aliens) {
-            if (i.getBomb().isAlive()) {
-                i.getBomb().update();
+        if (!isGameOver) {
+            player.update(keyInput.left, keyInput.right);
+            if (keyInput.shooting && !shot.isAlive()) {
+                shot.initShot(player.getX(), player.getY());
             }
-            if (i.isAlive()) {
-                i.update();
-                if (shot.isAlive() && alienCollision(i, shot)) {
-                    i.setDead();
-                    shot.setDead();
+            if (shot.isAlive()) {
+                shot.update();
+            }
+            shooting();
+            switchDirection();
+            //aliens came to player
+            if (maxY() >= player.getY()) {
+                //Make Game Over here
+                isGameOver = true;
+            }
+            for (Alien i : aliens) {
+                if (i.getBomb().isAlive()) {
+                    i.getBomb().update();
                 }
-            }
-            if (playerCollision(i.getBomb())) {
-                //make Game Over here
-                return WindowState.MENU;
-            }
+                if (i.isAlive()) {
+                    i.update();
+                    if (shot.isAlive() && alienCollision(i, shot)) {
+                        i.setDead();
+                        shot.setDead();
+                    }
+                }
+                if (playerCollision(i.getBomb())) {
+                    //make Game Over here
+                    isGameOver = true;
+                }
 
+            }
         }
         if (keyInput.escPressed) {
             keyInput.escPressed = false;
@@ -88,6 +96,9 @@ public class GameController {
             if (i.getBomb().isAlive()) {
                 i.getBomb().draw(g2);
             }
+        }
+        if (isGameOver) {
+            drawGameOver(g2);
         }
         g2.dispose();
     }
@@ -142,22 +153,18 @@ public class GameController {
         } else if (x_b + w_b >= x_p && x_b <= x_p + w_p) {
             return y_b + h_b >= y_p && y_b <= y_p + h_p;
         }
-        //если пришельцы долетели до игрока
-        if(maxY() >= y_p){
-            return true;
-        }
         return false;
     }
 
-    private void switchDirection(){
+    private void switchDirection() {
         if (minX() == 0) {
-            for(Alien i: aliens){
+            for (Alien i : aliens) {
                 i.setDirection(true);
                 i.setY(28);
             }
         }
         if (maxX() == GamePanel.getScreenWidth()) {
-            for(Alien i: aliens){
+            for (Alien i : aliens) {
                 i.setDirection(false);
                 i.setY(28);
             }
@@ -187,10 +194,38 @@ public class GameController {
     public int maxY() {
         int maxY = 0;
         for (Alien i : aliens) {
-            if (i.getY() + i.getH() > maxY) {
+            if (i.getY() + i.getH() > maxY && i.isAlive()) {
                 maxY = i.getY() + i.getH();
             }
         }
         return maxY;
+    }
+
+    private void drawGameOver(Graphics2D g2) {
+        g2.setComposite(AlphaComposite.SrcOver.derive(0.15f));
+        g2.fillRect(0, 0, GamePanel.getScreenWidth(), GamePanel.getScreenHeight());
+
+        g2.setComposite(AlphaComposite.SrcOver.derive(0.3f));
+        g2.setColor(Color.RED);
+        String str = "Game Over";
+        Font font = new Font("Arial", Font.PLAIN, 60);
+        g2.setFont(font);
+        int length = (int) g2.getFontMetrics().getStringBounds(str, g2).getWidth();
+        g2.drawString(str, GamePanel.getScreenWidth() / 2 - length / 2,
+                GamePanel.getScreenHeight() / 3);
+
+        g2.setColor(Color.GRAY);
+        str = "Press esc to leave";
+        font = new Font("Arial", Font.PLAIN, 30);
+        g2.setFont(font);
+        length = (int) g2.getFontMetrics().getStringBounds(str, g2).getWidth();
+        g2. drawString(str, GamePanel.getScreenWidth()/2 - length/2,
+                GamePanel.getScreenHeight()/2);
+
+        //сделать вывод счета
+    }
+
+    public boolean getGameOver(){
+        return isGameOver;
     }
 }

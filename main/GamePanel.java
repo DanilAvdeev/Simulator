@@ -109,7 +109,11 @@ public class GamePanel extends JPanel implements Runnable {
                 }
             }
         } else if (windowState.equals(WindowState.GAME_2)) {
-            windowState = gameController.update(keyInput);
+            if(gameController.getGameOver()){
+                gameController = new GameController();
+            } else {
+                windowState = gameController.update(keyInput);
+            }
         }
     }
 

@@ -1,7 +1,5 @@
 package main.spaceInvaders;
 
-import main.GamePanel;
-
 import java.awt.*;
 
 public class Alien {
@@ -22,24 +20,11 @@ public class Alien {
     }
 
     public void update() {
-        if (alive) {
-//            boolean getLower = false;
-//            if (x <= 0) {
-//                direction = true;
-//                getLower = true;
-//            } else if (x + 23 >= GamePanel.getScreenWidth()) {
-//                direction = false;
-//                getLower = true;
-//            }
             if (direction) {
                 x += speed;
             } else {
                 x -= speed;
             }
-//            if (getLower) {
-//                y += 28;
-//            }
-        }
     }
 
     public void draw(Graphics2D g2) {
