@@ -1,6 +1,6 @@
-package main;
+package main.lifeGame;
 
-import main.lifeGame.Cell;
+import main.GamePanel;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;

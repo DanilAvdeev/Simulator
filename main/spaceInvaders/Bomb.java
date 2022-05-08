@@ -7,8 +7,8 @@ import java.awt.*;
 public class Bomb {
     private int x;
     private int y;
-    private int w = 2;
-    private int h = 3;
+    private static final int w = 2;
+    private static final int h = 3;
     final int speed = 2;
     boolean alive = false;
 
@@ -35,10 +35,6 @@ public class Bomb {
 
     public boolean isAlive() {
         return alive;
-    }
-
-    public void setDead() {
-        alive = false;
     }
 
     public int getX() {

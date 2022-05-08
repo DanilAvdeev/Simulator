@@ -1,11 +1,10 @@
 package main;
 
-import main.lifeGame.CellState;
-import main.spaceInvaders.GameController;
+import main.lifeGame.*;
+import main.spaceInvaders.GameControllerSI;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Random;
 
 public class GamePanel extends JPanel implements Runnable {
     //FRAME
@@ -21,14 +20,15 @@ public class GamePanel extends JPanel implements Runnable {
 
     public static WindowState windowState = WindowState.MENU;
 
-    Box[][] boxes;
     Menu menu = new Menu();
     MouseInput mouseInput = new MouseInput();
-    KeyInput keyInput = new KeyInput();  //not in use rn
+    KeyInput keyInput = new KeyInput();
     Thread gameThread;
 
-    GameController gameController = new GameController();
+    GameControllerSI gameController = new GameControllerSI();
     static boolean gameStart = true;
+
+    GameControllerLG gameControllerLG = new GameControllerLG();
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -38,12 +38,11 @@ public class GamePanel extends JPanel implements Runnable {
         this.addMouseListener(mouseInput);
         this.setFocusable(true);
         this.addMouseMotionListener(mouseInput);
-        initBoxes();
     }
 
     public void startGameThread() {
-        gameThread = new Thread(this); //passing gamePanel
-        gameThread.start(); //calls run()
+        gameThread = new Thread(this);
+        gameThread.start();
     }
 
     @Override
@@ -77,7 +76,7 @@ public class GamePanel extends JPanel implements Runnable {
             }
 
             if (timer >= 1000000000) {
-                //System.out.println("FPS: " + drawCount);
+                System.out.println("FPS: " + drawCount);
                 drawCount = 0;
                 timer = 0;
             }
@@ -85,36 +84,16 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update() {
-        if (windowState.equals(WindowState.MENU)) { //если мы на вкладке меню
-            if (mouseInput.mouseX > menu.getX_1() && mouseInput.mouseX < menu.getX_1() + menu.getW_1() &&
-                    mouseInput.mouseY > menu.getY_1() && mouseInput.mouseY < menu.getY_1() + menu.getH_1() && mouseInput.clicked) {
-                windowState = WindowState.GAME_1;
-                mouseInput.clicked = false;
-            }
-            if (mouseInput.mouseX > menu.getX_2() && mouseInput.mouseX < menu.getX_2() + menu.getW_2() &&
-                    mouseInput.mouseY > menu.getY_2() && mouseInput.mouseY < menu.getY_2() + menu.getH_2() && mouseInput.clicked) {
-                windowState = WindowState.GAME_2;
-                mouseInput.clicked = false;
-            }
+        if (windowState.equals(WindowState.MENU)) {
+            windowState = menu.update(mouseInput);
         } else if (windowState.equals(WindowState.GAME_1)) {
-            if (keyInput.escPressed) {
-                windowState = WindowState.MENU;
-                keyInput.escPressed = false;
-            } else {
-                int around;
-                for (int x = 0; x < maxScreenCol; x++) {
-                    for (int y = 0; y < maxScreenRow; y++) {
-                        around = cellsAround(boxes, x, y);
-                        boxes[x][y].step_1(around);
-                    }
-                }
-            }
+            windowState = gameControllerLG.update(keyInput);
         } else if (windowState.equals(WindowState.GAME_2)) {
-            if(gameController.getGameOver()){
-               gameStart = false;
+            if (gameController.getGameOver()) {
+                gameStart = false;
             }
             if (gameStart) {
-                gameController = new GameController();
+                gameController = new GameControllerSI();
                 gameStart = false;
             }
             windowState = gameController.update(keyInput);
@@ -127,47 +106,11 @@ public class GamePanel extends JPanel implements Runnable {
         if (windowState.equals(WindowState.MENU)) {
             super.paintComponent(graphics);
             menu.draw(graphics2D);
-            graphics2D.dispose();
         } else if (windowState.equals(WindowState.GAME_1)) {
-            for (int x = 0; x < maxScreenCol; x++) {
-                for (int y = 0; y < maxScreenRow; y++) {
-                    boxes[x][y].draw(graphics2D);
-                }
-            }
-            graphics2D.dispose();
+            gameControllerLG.draw(graphics2D);
         } else if (windowState.equals(WindowState.GAME_2)) {
             gameController.draw(graphics2D);
         }
-    }
-
-    private void initBoxes() {
-        Random random;
-        boxes = new Box[maxScreenCol][maxScreenRow];
-        for (int x = 0; x < maxScreenCol; x++) {
-            for (int y = 0; y < maxScreenRow; y++) {
-                boxes[x][y] = new Box(x, y);
-                random = new Random();
-                if (random.nextBoolean()) {
-                    boxes[x][y].cell.cellState = CellState.ALIVE;
-                } else {
-                    boxes[x][y].cell.cellState = CellState.DEAD;
-                }
-            }
-        }
-    }
-
-    int cellsAround(Box[][] boxes, int x, int y) {
-        int count = 0;
-        for (int i = -1; i <= 1; i++) {
-            for (int j = -1; j <= 1; j++) {
-                if (!(i == 0 && j == 0)) {
-                    if (boxes[(x + i + maxScreenCol) % maxScreenCol][(y + j + maxScreenRow) % maxScreenRow].cell.isLive()) {
-                        count++;
-                    }
-                }
-            }
-        }
-        return count;
     }
 
     public static int getTileSize() {
@@ -186,4 +129,11 @@ public class GamePanel extends JPanel implements Runnable {
         gameStart = setToStart;
     }
 
+    public static int getMaxScreenCol() {
+        return maxScreenCol;
+    }
+
+    public static int getMaxScreenRow() {
+        return maxScreenRow;
+    }
 }

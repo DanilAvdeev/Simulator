@@ -7,7 +7,7 @@ import main.WindowState;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class GameController {
+public class GameControllerSI {
     ArrayList<Alien> aliens = new ArrayList<>();
     Player player = new Player();
     Shot shot = new Shot();
@@ -16,7 +16,7 @@ public class GameController {
     boolean isWin = false;
     int score = 0;
 
-    public GameController() {
+    public GameControllerSI() {
         initAliens();
     }
 
