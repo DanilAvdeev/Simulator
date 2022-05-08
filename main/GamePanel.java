@@ -1,6 +1,6 @@
 package main;
 
-import main.lifeGame.*;
+import main.lifeGame.GameControllerLG;
 import main.spaceInvaders.GameControllerSI;
 
 import javax.swing.*;
