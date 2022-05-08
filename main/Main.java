@@ -1,5 +1,7 @@
+package main;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("kak je tyajelo nahooy");
+        Window window = new Window();
     }
 }
