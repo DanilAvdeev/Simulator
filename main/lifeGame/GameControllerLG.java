@@ -8,7 +8,7 @@ import java.awt.*;
 import java.util.Random;
 
 public class GameControllerLG {
-    Box[][] boxes;
+    private Box[][] boxes;
 
     public GameControllerLG(){
         initBoxes();
@@ -23,7 +23,7 @@ public class GameControllerLG {
             for (int x = 0; x < GamePanel.getMaxScreenCol(); x++) {
                 for (int y = 0; y < GamePanel.getMaxScreenRow(); y++) {
                     around = cellsAround(boxes, x, y);
-                    boxes[x][y].step_1(around);
+                    boxes[x][y].update(around);
                 }
             }
         }
@@ -46,21 +46,21 @@ public class GameControllerLG {
                 boxes[x][y] = new Box(x, y);
                 random = new Random();
                 if (random.nextBoolean()) {
-                    boxes[x][y].cell.cellState = CellState.ALIVE;
+                    boxes[x][y].getCell().setCellState(CellState.ALIVE);
                 } else {
-                    boxes[x][y].cell.cellState = CellState.DEAD;
+                    boxes[x][y].getCell().setCellState(CellState.DEAD);
                 }
             }
         }
     }
 
-    int cellsAround(Box[][] boxes, int x, int y) {
+    private int cellsAround(Box[][] boxes, int x, int y) {
         int count = 0;
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
                 if (!(i == 0 && j == 0)) {
                     if (boxes[(x + i + GamePanel.getMaxScreenCol()) % GamePanel.getMaxScreenCol()]
-                            [(y + j + GamePanel.getMaxScreenRow()) % GamePanel.getMaxScreenRow()].cell.isLive()) {
+                            [(y + j + GamePanel.getMaxScreenRow()) % GamePanel.getMaxScreenRow()].getCell().isLive()) {
                         count++;
                     }
                 }

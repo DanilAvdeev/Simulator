@@ -3,14 +3,13 @@ package main.spaceInvaders;
 import java.awt.*;
 
 public class Alien {
-    int x;
-    int y;
-    int w = 25;
-    int h = 16;
-    final int speed = 1;
+    private int x;
+    private int y;
+    private final int WIDTH = 26;
+    private final int HEIGHT = 16;
     private boolean direction = false;
     private boolean alive;
-    Bomb bomb;
+    private final Bomb bomb;
 
     public Alien(int x_cord, int y_cord, Bomb bomb1) {
         alive = true;
@@ -20,19 +19,20 @@ public class Alien {
     }
 
     public void update() {
+        final int SPEED = 1;
         if (direction) {
-            x += speed;
+            x += SPEED;
         } else {
-            x -= speed;
+            x -= SPEED;
         }
     }
 
     public void draw(Graphics2D g2) {
         if (alive) {
             g2.setColor(Color.gray);
-            g2.fillRect(x, y + 4, 26, 7);
-            g2.fillRect(x + 3, y + 1, 5, 14);
-            g2.fillRect(x + 18, y + 1, 5, 14);
+            g2.fillRect(x, y + 4, WIDTH, 7);
+            g2.fillRect(x + 3, y + 1, 5, HEIGHT - 2);
+            g2.fillRect(x + 18, y + 1, 5, HEIGHT - 2);
             g2.fillRect(x + 4, y + 14, 2, 3);
             g2.fillRect(x + 21, y + 14, 2, 3);
         }
@@ -50,12 +50,12 @@ public class Alien {
         return y;
     }
 
-    public int getW() {
-        return w;
+    public int getWidth() {
+        return WIDTH;
     }
 
-    public int getH() {
-        return h;
+    public int getHeight() {
+        return HEIGHT;
     }
 
     public Bomb getBomb() {

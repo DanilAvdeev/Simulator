@@ -9,31 +9,33 @@ import java.awt.*;
 public class GamePanel extends JPanel implements Runnable {
     //Singleton
     private static GamePanel instance;
-    //FRAME
-    static final int scale = 1; //later change it so we can choose it from different
-    static final int originTileSize = 16;
-    static final int tileSize = scale * originTileSize;
-    static final int maxScreenCol = 40;
-    static final int maxScreenRow = 30; //window is 4x3
-    static final int screenWidth = tileSize * maxScreenCol;
-    static final int screenHeight = tileSize * maxScreenRow;
+    //FRAME SETTINGS
+    private static final int SCALE = 1; //later change it so we can choose it from different
+    private static final int ORIGIN_TILE_SIZE = 16;
+    private static final int TILE_SIZE = SCALE * ORIGIN_TILE_SIZE;
+    private static final int MAX_SCREEN_COL = 40;
+    private static final int MAX_SCREEN_ROW = 30; //window is 4x3
+    private static final int SCREEN_WIDTH = TILE_SIZE * MAX_SCREEN_COL;
+    private static final int SCREEN_HEIGHT = TILE_SIZE * MAX_SCREEN_ROW;
     //FPS
-    static final int fps = 60;
-
+    private static final int FPS = 60;
+    //
     private static WindowState windowState = WindowState.MENU;
+    //
+    private final GameControllerLG gameControllerLG = new GameControllerLG();
+    private GameControllerSI gameControllerSI =  new GameControllerSI();
+    private static boolean gameStart = true;
+    //
+    private final Menu menu = new Menu();
+    private final MouseInput mouseInput = new MouseInput();
+    private final KeyInput keyInput = new KeyInput();
+    private Thread gameThread;
 
-    Menu menu = new Menu();
-    MouseInput mouseInput = new MouseInput();
-    KeyInput keyInput = new KeyInput();
-    Thread gameThread;
 
-    GameControllerSI gameController =  new GameControllerSI();
-    static boolean gameStart = true;
 
-    GameControllerLG gameControllerLG = new GameControllerLG();
 
     private GamePanel() {
-        this.setPreferredSize(new Dimension(screenWidth, screenHeight));
+        this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);
         this.addKeyListener(keyInput);
@@ -65,11 +67,11 @@ public class GamePanel extends JPanel implements Runnable {
 
         while (gameThread != null) {
             if (windowState == WindowState.MENU) {
-                drawInterval = 1000000000.0 / fps;
+                drawInterval = 1000000000.0 / FPS;
             } else if (windowState == WindowState.GAME_1) {
-                drawInterval = 10000000000.0 / fps;
+                drawInterval = 10000000000.0 / FPS;
             } else {
-                drawInterval = 1000000000.0 / fps;
+                drawInterval = 1000000000.0 / FPS;
             }
             //1.UPDATE INFORMATION
             currentTime = System.nanoTime();
@@ -92,20 +94,20 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
-    public void update() {
+    private void update() {
         if (windowState.equals(WindowState.MENU)) {
             windowState = menu.update(mouseInput);
         } else if (windowState.equals(WindowState.GAME_1)) {
             gameControllerLG.update(keyInput);
         } else if (windowState.equals(WindowState.GAME_2)) {
-            if (gameController.getGameOver()) {
+            if (gameControllerSI.getGameOver()) {
                 gameStart = false;
             }
             if (gameStart) {
-                gameController = new GameControllerSI();
+                gameControllerSI = new GameControllerSI();
                 gameStart = false;
             }
-            gameController.update(keyInput);
+            gameControllerSI.update(keyInput);
         }
     }
 
@@ -118,28 +120,28 @@ public class GamePanel extends JPanel implements Runnable {
         } else if (windowState.equals(WindowState.GAME_1)) {
             gameControllerLG.draw(graphics2D);
         } else if (windowState.equals(WindowState.GAME_2)) {
-            gameController.draw(graphics2D);
+            gameControllerSI.draw(graphics2D);
         }
     }
 
     public static int getTileSize() {
-        return tileSize;
+        return TILE_SIZE;
     }
 
     public static int getScreenWidth() {
-        return screenWidth;
+        return SCREEN_WIDTH;
     }
 
     public static int getScreenHeight() {
-        return screenHeight;
+        return SCREEN_HEIGHT;
     }
 
     public static int getMaxScreenCol() {
-        return maxScreenCol;
+        return MAX_SCREEN_COL;
     }
 
     public static int getMaxScreenRow() {
-        return maxScreenRow;
+        return MAX_SCREEN_ROW;
     }
 
     public static void setGameStatus(boolean setToStart) {

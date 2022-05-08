@@ -3,7 +3,7 @@ package main.lifeGame;
 import java.awt.*;
 
 public class Cell {
-    public CellState cellState;
+    private CellState cellState;
 
     public Cell() {
         cellState = CellState.DEAD;
@@ -13,11 +13,15 @@ public class Cell {
         return cellState == CellState.ALIVE;
     }
 
-    public void step1(int around) {
-        cellState = cellState.step_1(around);
+    public void update(int around) {
+        cellState = cellState.update(around);
     }
 
     public void turn() { this.cellState = CellState.ALIVE; }
+
+    public void setCellState(CellState newCellState){
+        cellState = newCellState;
+    }
 
     public Color getColor() {
         if (this.cellState == CellState.DEAD) {

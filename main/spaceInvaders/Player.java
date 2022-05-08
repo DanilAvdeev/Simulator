@@ -8,10 +8,8 @@ public class Player {
     //начальные координаты и размеры игрока (корабля)
     private int x;
     private final int y = 400; //по идее не будет меняться
-    final int height;
-    final int width;
-    //скорость перемещения
-    final int speed = 2;
+    private final int height;
+    private final int width;
 
     public Player() {
         x = GamePanel.getScreenWidth() / 2;
@@ -21,6 +19,7 @@ public class Player {
 
     //поправить координаты слева и справа
     public void update(boolean left, boolean right) {
+        final int speed = 3;
         if (left && x >= speed) {
             x -= speed;
         }

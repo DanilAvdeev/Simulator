@@ -3,12 +3,11 @@ package main.spaceInvaders;
 import java.awt.*;
 
 public class Shot {
-    int x;
-    int y;
-    int w = 2;
-    int h = 3;
-    final int speed = 4;
-    boolean alive = false;
+    private int x;
+    private int y;
+    private final int WIDTH = 2;
+    private final int HEIGHT = 3;
+    private boolean alive = false;
 
     public Shot() {
     }
@@ -20,11 +19,12 @@ public class Shot {
     }
 
     public void update() {
+        final int SPEED = 4;
         if(alive) {
             if (y <= 0) {
                 alive = false;
             } else {
-                y -= speed;
+                y -= SPEED;
             }
         }
     }
@@ -32,7 +32,7 @@ public class Shot {
     public void draw(Graphics2D g2) {
         if (alive) {
             g2.setColor(Color.RED);
-            g2.fillRect(x, y, w, h);
+            g2.fillRect(x, y, WIDTH, HEIGHT);
         }
     }
 
@@ -53,10 +53,10 @@ public class Shot {
     }
 
     public int getW() {
-        return w;
+        return WIDTH;
     }
 
     public int getH() {
-        return h;
+        return HEIGHT;
     }
 }

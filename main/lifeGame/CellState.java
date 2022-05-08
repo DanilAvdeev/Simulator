@@ -4,7 +4,7 @@ public enum CellState {
     ALIVE,
     DEAD;
 
-    public CellState step_1(int around) {
+    public CellState update(int around) {
         if (this == DEAD) {
             if (around == 3) {
                 return ALIVE;

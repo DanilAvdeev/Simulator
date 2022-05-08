@@ -8,16 +8,18 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class GameControllerSI {
-    ArrayList<Alien> aliens = new ArrayList<>();
-    Player player = new Player();
-    Shot shot = new Shot();
-    Field field = new Field();
-    boolean isGameOver = false;
-    boolean isWin = false;
-    int score = 0;
+    private final ArrayList<Alien> aliens = new ArrayList<>();
+    private final Player player;
+    private final Shot shot;
+    private final Field field = new Field();
+    private boolean isGameOver = false;
+    private boolean isWin = false;
+    private int score = 0;
 
     public GameControllerSI() {
         initAliens();
+        shot = new Shot();
+        player = new Player();
     }
 
     private void shooting() {
@@ -28,7 +30,7 @@ public class GameControllerSI {
         }
     }
 
-    public void initAliens() {
+    private void initAliens() {
         int num = 12;
         int x_start = 80;
         int x_offset = 0;
@@ -119,8 +121,8 @@ public class GameControllerSI {
     private boolean alienCollision(Alien alien, Shot shot) {
         int x_a = alien.getX();
         int y_a = alien.getY();
-        int w_a = alien.getW();
-        int h_a = alien.getH();
+        int w_a = alien.getWidth();
+        int h_a = alien.getHeight();
 
         int x_s = shot.getX();
         int y_s = shot.getY();
@@ -184,7 +186,7 @@ public class GameControllerSI {
         }
     }
 
-    public int minX() {
+    private int minX() {
         int minX = GamePanel.getScreenWidth();
         for (Alien i : aliens) {
             if (i.getX() < minX) {
@@ -194,21 +196,21 @@ public class GameControllerSI {
         return minX;
     }
 
-    public int maxX() {
+    private int maxX() {
         int maxX = 0;
         for (Alien i : aliens) {
-            if (i.getX() + i.getW() > maxX) {
-                maxX = i.getX() + i.getW();
+            if (i.getX() + i.getWidth() > maxX) {
+                maxX = i.getX() + i.getWidth();
             }
         }
         return maxX;
     }
 
-    public int maxY() {
+    private int maxY() {
         int maxY = 0;
         for (Alien i : aliens) {
-            if (i.getY() + i.getH() > maxY && i.isAlive()) {
-                maxY = i.getY() + i.getH();
+            if (i.getY() + i.getHeight() > maxY && i.isAlive()) {
+                maxY = i.getY() + i.getHeight();
             }
         }
         return maxY;

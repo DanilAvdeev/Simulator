@@ -7,10 +7,9 @@ import java.awt.*;
 public class Bomb {
     private int x;
     private int y;
-    private static final int w = 2;
-    private static final int h = 3;
-    final int speed = 2;
-    boolean alive = false;
+    private static final int WIDTH = 2;
+    private static final int HEIGHT = 3;
+    private boolean alive = false;
 
     public Bomb() {}
 
@@ -21,7 +20,8 @@ public class Bomb {
     }
 
     public void update() {
-        if (y+h >= GamePanel.getScreenHeight()) {
+        final int speed = 2;
+        if (y+HEIGHT >= GamePanel.getScreenHeight()) {
             alive = false;
         } else {
             y += speed;
@@ -46,10 +46,10 @@ public class Bomb {
     }
 
     public int getW() {
-        return w;
+        return WIDTH;
     }
 
     public int getH() {
-        return h;
+        return HEIGHT;
     }
 }

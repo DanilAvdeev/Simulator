@@ -8,8 +8,8 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Box extends JPanel {
-    Cell cell;
-    int x_cord, y_cord;
+    private final Cell cell;
+    private final int x_cord, y_cord;
 
     public Box(int x, int y) {
         super();
@@ -24,13 +24,17 @@ public class Box extends JPanel {
         });
     }
 
-    void step_1(int around) {
-        cell.step1(around);
+    void update(int around) {
+        cell.update(around);
     }
 
     void draw(Graphics2D g2) {
         g2.setColor(cell.getColor());
         g2.fillRect(x_cord * GamePanel.getTileSize() + 1, y_cord * GamePanel.getTileSize() + 1,
                 GamePanel.getTileSize() - 2, GamePanel.getTileSize() - 2);
+    }
+
+    public Cell getCell(){
+        return cell;
     }
 }
