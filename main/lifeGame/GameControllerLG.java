@@ -15,8 +15,8 @@ public class GameControllerLG {
     }
 
     public void update(KeyInput keyInput){
-        if (keyInput.escPressed) {
-            keyInput.escPressed = false;
+        if (keyInput.isEscPressed()) {
+            keyInput.setEscPressed(false);
             GamePanel.setWindowState(WindowState.MENU);
         } else {
             int around;

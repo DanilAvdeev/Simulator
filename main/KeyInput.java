@@ -6,14 +6,15 @@ import java.awt.event.KeyListener;
 
 public class KeyInput implements KeyListener {
 
-    public boolean escPressed = false;
-    public boolean left = false;
-    public boolean right = false;
-    public boolean shooting = false;
+    private boolean escPressed = false;
+    private boolean left = false;
+    private boolean right = false;
+    private boolean shooting = false;
+
 
     @Override
     public void keyTyped(KeyEvent e) {
-        //shooting = true;
+
     }
 
     @Override
@@ -50,5 +51,25 @@ public class KeyInput implements KeyListener {
         if (code == KeyEvent.VK_SPACE){
             shooting = false;
         }
+    }
+
+    public boolean isEscPressed(){
+        return escPressed;
+    }
+
+    public boolean isLeft() {
+        return left;
+    }
+
+    public boolean isRight() {
+        return right;
+    }
+
+    public boolean isShooting() {
+        return shooting;
+    }
+
+    public void setEscPressed(boolean escPressed) {
+        this.escPressed = escPressed;
     }
 }

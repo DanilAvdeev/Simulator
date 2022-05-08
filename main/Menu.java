@@ -11,15 +11,15 @@ public class Menu extends JPanel {
     private static final String img_2 = "images/rightHalf.png";
     String[] list = new String[buttonNum];
     //coordinates and size of button № 1
-    int x_1 = GamePanel.getTileSize() * 4 + 1;
-    int y_1 = GamePanel.getTileSize() * 5 + 1;
-    int w_1 = GamePanel.getTileSize() * 12 - 2;
-    int h_1 = GamePanel.getTileSize() * 4 - 2;
+    private final int x_1 = GamePanel.getTileSize() * 4 + 1;
+    private final int y_1 = GamePanel.getTileSize() * 5 + 1;
+    private final int w_1 = GamePanel.getTileSize() * 12 - 2;
+    private final int h_1 = GamePanel.getTileSize() * 4 - 2;
     //coordinates and size of button № 2
-    int x_2 = GamePanel.getTileSize() * 4 + GamePanel.getScreenWidth() / 2 - 4;
-    int y_2 = GamePanel.getTileSize() * 5 + 1;
-    int w_2 = GamePanel.getTileSize() * 12 + 8;
-    int h_2 = GamePanel.getTileSize() * 4 - 2;
+    private final int x_2 = GamePanel.getTileSize() * 4 + GamePanel.getScreenWidth() / 2 - 4;
+    private final int y_2 = GamePanel.getTileSize() * 5 + 1;
+    private final int w_2 = GamePanel.getTileSize() * 12 + 8;
+    private final int h_2 = GamePanel.getTileSize() * 4 - 2;
 
     public Menu() {
         list[0] = "Life Game";
@@ -27,14 +27,14 @@ public class Menu extends JPanel {
     }
 
     public WindowState update(MouseInput mouseInput){
-        if (mouseInput.mouseX > x_1 && mouseInput.mouseX < x_1 + w_1 &&
-                mouseInput.mouseY > y_1 && mouseInput.mouseY < y_1 + h_1 && mouseInput.clicked) {
-            mouseInput.clicked = false;
+        if (mouseInput.getMouseX() > x_1 && mouseInput.getMouseX() < x_1 + w_1 &&
+                mouseInput.getMouseY() > y_1 && mouseInput.getMouseY() < y_1 + h_1 && mouseInput.isClicked()) {
+            mouseInput.setClicked(false);
             return WindowState.GAME_1;
         }
-        if (mouseInput.mouseX > x_2 && mouseInput.mouseX < x_2 + w_2 &&
-                mouseInput.mouseY > y_2 && mouseInput.mouseY < y_2 + h_2 && mouseInput.clicked) {
-            mouseInput.clicked = false;
+        if (mouseInput.getMouseX() > x_2 && mouseInput.getMouseX() < x_2 + w_2 &&
+                mouseInput.getMouseY() > y_2 && mouseInput.getMouseY() < y_2 + h_2 && mouseInput.isClicked()) {
+            mouseInput.setClicked(false);
             return WindowState.GAME_2;
         }
         return WindowState.MENU;

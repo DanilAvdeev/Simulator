@@ -50,8 +50,8 @@ public class GameControllerSI {
 
     public void update(KeyInput keyInput) {
         if (!isGameOver) {
-            player.update(keyInput.left, keyInput.right);
-            if (keyInput.shooting && !shot.isAlive()) {
+            player.update(keyInput.isLeft(), keyInput.isRight());
+            if (keyInput.isShooting() && !shot.isAlive()) {
                 shot.initShot(player.getX(), player.getY());
             }
             if (shot.isAlive()) {
@@ -86,13 +86,13 @@ public class GameControllerSI {
                 isWin = true;
                 isGameOver = true;
             }
-            if (keyInput.escPressed) {
-                keyInput.escPressed = false;
+            if (keyInput.isEscPressed()) {
+                keyInput.setEscPressed(false);
                 GamePanel.setWindowState(WindowState.MENU);
             }
         } else {
-            if (keyInput.escPressed) {
-                keyInput.escPressed = false;
+            if (keyInput.isEscPressed()) {
+                keyInput.setEscPressed(false);
                 GamePanel.setGameStatus(true);
                 isGameOver = false;
                 GamePanel.setWindowState(WindowState.MENU);
