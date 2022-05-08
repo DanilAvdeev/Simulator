@@ -7,6 +7,8 @@ import javax.swing.*;
 import java.awt.*;
 
 public class GamePanel extends JPanel implements Runnable {
+    //Singleton
+    private static GamePanel instance;
     //FRAME
     static final int scale = 1; //later change it so we can choose it from different
     static final int originTileSize = 16;
@@ -16,7 +18,7 @@ public class GamePanel extends JPanel implements Runnable {
     static final int screenWidth = tileSize * maxScreenCol;
     static final int screenHeight = tileSize * maxScreenRow;
     //FPS
-    int fps = 60;
+    static final int fps = 60;
 
     public static WindowState windowState = WindowState.MENU;
 
@@ -25,12 +27,12 @@ public class GamePanel extends JPanel implements Runnable {
     KeyInput keyInput = new KeyInput();
     Thread gameThread;
 
-    GameControllerSI gameController = new GameControllerSI();
+    GameControllerSI gameController =  new GameControllerSI();
     static boolean gameStart = true;
 
     GameControllerLG gameControllerLG = new GameControllerLG();
 
-    public GamePanel() {
+    private GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);
@@ -38,6 +40,13 @@ public class GamePanel extends JPanel implements Runnable {
         this.addMouseListener(mouseInput);
         this.setFocusable(true);
         this.addMouseMotionListener(mouseInput);
+    }
+
+    public static GamePanel getInstance(){
+        if (instance == null) {
+            instance = new GamePanel();
+        }
+        return instance;
     }
 
     public void startGameThread() {

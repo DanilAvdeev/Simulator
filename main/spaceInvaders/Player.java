@@ -13,7 +13,6 @@ public class Player {
     //скорость перемещения
     final int speed = 2;
 
-    //конструктор сделать синглтоновым
     public Player() {
         x = GamePanel.getScreenWidth() / 2;
         height = GamePanel.getTileSize();

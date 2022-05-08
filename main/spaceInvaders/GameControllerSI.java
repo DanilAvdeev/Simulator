@@ -83,7 +83,6 @@ public class GameControllerSI {
             if (allDead) {
                 isWin = true;
                 isGameOver = true;
-                //add winning line
             }
             if (keyInput.escPressed) {
                 keyInput.escPressed = false;
