@@ -20,11 +20,11 @@ public class Alien {
     }
 
     public void update() {
-            if (direction) {
-                x += speed;
-            } else {
-                x -= speed;
-            }
+        if (direction) {
+            x += speed;
+        } else {
+            x -= speed;
+        }
     }
 
     public void draw(Graphics2D g2) {
@@ -70,7 +70,7 @@ public class Alien {
         direction = dir;
     }
 
-    public void setY(int diff){
+    public void setY(int diff) {
         y += diff;
     }
 }

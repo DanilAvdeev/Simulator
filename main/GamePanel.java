@@ -20,7 +20,7 @@ public class GamePanel extends JPanel implements Runnable {
     //FPS
     static final int fps = 60;
 
-    public static WindowState windowState = WindowState.MENU;
+    private static WindowState windowState = WindowState.MENU;
 
     Menu menu = new Menu();
     MouseInput mouseInput = new MouseInput();
@@ -96,7 +96,7 @@ public class GamePanel extends JPanel implements Runnable {
         if (windowState.equals(WindowState.MENU)) {
             windowState = menu.update(mouseInput);
         } else if (windowState.equals(WindowState.GAME_1)) {
-            windowState = gameControllerLG.update(keyInput);
+            gameControllerLG.update(keyInput);
         } else if (windowState.equals(WindowState.GAME_2)) {
             if (gameController.getGameOver()) {
                 gameStart = false;
@@ -105,7 +105,7 @@ public class GamePanel extends JPanel implements Runnable {
                 gameController = new GameControllerSI();
                 gameStart = false;
             }
-            windowState = gameController.update(keyInput);
+            gameController.update(keyInput);
         }
     }
 
@@ -134,15 +134,19 @@ public class GamePanel extends JPanel implements Runnable {
         return screenHeight;
     }
 
-    public static void setGameStatus(boolean setToStart) {
-        gameStart = setToStart;
-    }
-
     public static int getMaxScreenCol() {
         return maxScreenCol;
     }
 
     public static int getMaxScreenRow() {
         return maxScreenRow;
+    }
+
+    public static void setGameStatus(boolean setToStart) {
+        gameStart = setToStart;
+    }
+
+    public static void setWindowState(WindowState newState) {
+        windowState = newState;
     }
 }

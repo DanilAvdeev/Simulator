@@ -46,7 +46,7 @@ public class GameControllerSI {
         }
     }
 
-    public WindowState update(KeyInput keyInput) {
+    public void update(KeyInput keyInput) {
         if (!isGameOver) {
             player.update(keyInput.left, keyInput.right);
             if (keyInput.shooting && !shot.isAlive()) {
@@ -86,17 +86,16 @@ public class GameControllerSI {
             }
             if (keyInput.escPressed) {
                 keyInput.escPressed = false;
-                return WindowState.MENU;
+                GamePanel.setWindowState(WindowState.MENU);
             }
         } else {
             if (keyInput.escPressed) {
                 keyInput.escPressed = false;
                 GamePanel.setGameStatus(true);
                 isGameOver = false;
-                return WindowState.MENU;
+                GamePanel.setWindowState(WindowState.MENU);
             }
         }
-        return WindowState.GAME_2;
     }
 
     public void draw(Graphics2D g2) {

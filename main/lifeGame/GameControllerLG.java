@@ -14,10 +14,10 @@ public class GameControllerLG {
         initBoxes();
     }
 
-    public WindowState update(KeyInput keyInput){
+    public void update(KeyInput keyInput){
         if (keyInput.escPressed) {
             keyInput.escPressed = false;
-            return WindowState.MENU;
+            GamePanel.setWindowState(WindowState.MENU);
         } else {
             int around;
             for (int x = 0; x < GamePanel.getMaxScreenCol(); x++) {
@@ -27,7 +27,6 @@ public class GameControllerLG {
                 }
             }
         }
-        return WindowState.GAME_1;
     }
 
     public void draw(Graphics2D g2){
