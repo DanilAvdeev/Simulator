@@ -1,15 +1,17 @@
 package main.lifeGame;
 
 public enum CellState {
+    NONE,
+    BORN,
     ALIVE,
     DEAD;
 
-    public CellState update(int around) {
-        if (this == DEAD) {
+    public CellState step_1(int around) {
+        if (this == NONE) {
             if (around == 3) {
                 return ALIVE;
             } else {
-                return DEAD;
+                return NONE;
             }
         } else if (this == ALIVE) {
             if (around < 2 || around > 3) {
@@ -17,6 +19,16 @@ public enum CellState {
             } else {
                 return ALIVE;
             }
+        } else {
+            return this;
+        }
+    }
+
+    public CellState step_2() {
+        if (this == BORN) {
+            return ALIVE;
+        } else if (this == DEAD){
+            return NONE;
         } else {
             return this;
         }

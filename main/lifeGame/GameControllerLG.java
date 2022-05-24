@@ -3,7 +3,6 @@ package main.lifeGame;
 import main.GamePanel;
 import main.KeyInput;
 import main.WindowState;
-
 import java.awt.*;
 import java.util.Random;
 
@@ -23,7 +22,12 @@ public class GameControllerLG {
             for (int x = 0; x < GamePanel.getMaxScreenCol(); x++) {
                 for (int y = 0; y < GamePanel.getMaxScreenRow(); y++) {
                     around = cellsAround(boxes, x, y);
-                    boxes[x][y].update(around);
+                    boxes[x][y].step_1(around);
+                }
+            }
+            for (int x = 0; x < GamePanel.getMaxScreenCol(); x++) {
+                for (int y = 0; y < GamePanel.getMaxScreenRow(); y++) {
+                    boxes[x][y].step_2();
                 }
             }
         }
@@ -39,16 +43,17 @@ public class GameControllerLG {
     }
 
     private void initBoxes() {
-        Random random;
+        int a = 0;
+        int b = 100;
         boxes = new Box[GamePanel.getMaxScreenCol()][GamePanel.getMaxScreenRow()];
         for (int x = 0; x < GamePanel.getMaxScreenCol(); x++) {
             for (int y = 0; y < GamePanel.getMaxScreenRow(); y++) {
                 boxes[x][y] = new Box(x, y);
-                random = new Random();
-                if (random.nextBoolean()) {
+                int randomNumber = a + (int)(Math.random() * b);
+                if ( randomNumber <= 8) {
                     boxes[x][y].getCell().setCellState(CellState.ALIVE);
                 } else {
-                    boxes[x][y].getCell().setCellState(CellState.DEAD);
+                    boxes[x][y].getCell().setCellState(CellState.NONE);
                 }
             }
         }

@@ -31,9 +31,6 @@ public class GamePanel extends JPanel implements Runnable {
     private final KeyInput keyInput = new KeyInput();
     private Thread gameThread;
 
-
-
-
     private GamePanel() {
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         this.setBackground(Color.BLACK);
