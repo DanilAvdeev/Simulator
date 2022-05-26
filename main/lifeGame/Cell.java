@@ -9,8 +9,8 @@ public class Cell {
         cellState = CellState.NONE;
     }
 
-    public boolean isLive() {
-        return cellState == CellState.ALIVE;
+    public boolean isLiveOrDead() {
+        return cellState == CellState.ALIVE || cellState == CellState.DEAD;
     }
 
     public void step_1(int around) {
@@ -26,13 +26,20 @@ public class Cell {
     }
 
     public Color getColor() {
-        if (this.cellState == CellState.DEAD || this.cellState == CellState.NONE) {
+        if (this.cellState == CellState.NONE) {
             return Color.WHITE;
         }
-        if (this.cellState == CellState.BORN) {
+        if (this.cellState == CellState.DEAD){
             return Color.RED;
+        }
+        if (this.cellState == CellState.BORN) {
+            return Color.CYAN;
         }
 
         return Color.BLUE;
     }
+
+//    public void turn(){
+//        cellState = CellState.ALIVE;
+//    }
 }

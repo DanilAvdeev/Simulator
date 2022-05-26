@@ -9,7 +9,7 @@ public enum CellState {
     public CellState step_1(int around) {
         if (this == NONE) {
             if (around == 3) {
-                return ALIVE;
+                return BORN;
             } else {
                 return NONE;
             }
@@ -19,9 +19,8 @@ public enum CellState {
             } else {
                 return ALIVE;
             }
-        } else {
-            return this;
         }
+        return this;
     }
 
     public CellState step_2() {
